@@ -3,8 +3,9 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 datafilepath = 'data/SEIFA.csv'
+datafilepath2 = 'data/Population per SEIFA Quintile.csv'
 
-def barchart():
+def casesperquint():
     data = pd.read_csv(datafilepath, encoding = 'ISO-8859-1')
     data = data.set_axis(['Quintile', '16-17', '17-18', '18-19'], axis='columns')
     data = data.set_index('Quintile')
@@ -31,6 +32,26 @@ def barchart():
     plt.xticks(x_axis + width/3, x)
     plt.show()
     plt.savefig("barchart.png")
+    plt.close()
     return
 
-barchart()
+def seifapop():
+    data = pd.read_csv(datafilepath2, encoding = 'ISO-8859-1')
+    data = data.set_axis(['Quintile', 'Population'], axis='columns')
+    data = data.set_index('Quintile')
+    data['Population'] = data['Population'].astype(int)
+    pop = data.iloc[0:,0].values.tolist()
+    x = ["Quintile 1", "Quintile 2", "Quintile 3", "Quintile 4", "Quintile 5"]
+    x_axis = np.arange(len(x))
+    plt.bar(x_axis, pop)
+    plt.xlabel('Quintiles')
+    plt.ylabel('Population in millions')
+    plt.xticks(x_axis, x)
+    plt.title('Number of people living in each SEIFA quintile')
+    plt.show()
+    plt.savefig("Pop in SEIFA quint")
+    plt.close()
+    return
+
+casesperquint()
+seifapop()
