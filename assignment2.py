@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 datafilepath = 'data/SEIFA.csv'
 datafilepath2 = 'data/Population per SEIFA Quintile.csv'
 datafilepath3 = 'data/Vic Pop SEIFA dist.csv'
+datafilepath4 = 'data/MHContacts per SEIFA.csv'
 
 def casesperquint():
     data = pd.read_csv(datafilepath, encoding = 'ISO-8859-1')
@@ -72,6 +73,25 @@ def seifapopvic():
     plt.close()
     return
 
+def seifaviccon():
+    data = pd.read_csv(datafilepath4, encoding = 'ISO-8859-1')
+    data = data.set_axis(['Quintile', 'Service Contacts'], axis='columns')
+    data = data.set_index('Quintile')
+    data['Service Contacts'] = data['Service Contacts'].astype(int)
+    con = data.iloc[0:, 0].values.tolist()
+    x = ["Quintile 1", "Quintile 2", "Quintile 3", "Quintile 4", "Quintile 5"]
+    x_axis = np.arange(len(x))
+    plt.bar(x_axis, con)
+    plt.xlabel('Quintiles')
+    plt.ylabel('Number of Service Contacts')
+    plt.xticks(x_axis, x)
+    plt.title('Victoria Service Contacts per SEIFA quintile')
+    plt.show
+    plt.savefig("Vic SerCon per SEIFA quint")
+    plt.close()
+    return
+
 casesperquint()
 seifapop()
 seifapopvic()
+seifaviccon()
