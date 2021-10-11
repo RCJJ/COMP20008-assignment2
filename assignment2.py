@@ -6,6 +6,7 @@ datafilepath = 'data/SEIFA.csv'
 datafilepath2 = 'data/Population per SEIFA Quintile.csv'
 datafilepath3 = 'data/Vic Pop SEIFA dist.csv'
 datafilepath4 = 'data/MHContacts per SEIFA.csv'
+datafilepath5 = 'data/Age.csv'
 
 def casesperquint():
     data = pd.read_csv(datafilepath, encoding = 'ISO-8859-1')
@@ -91,7 +92,43 @@ def seifaviccon():
     plt.close()
     return
 
+def age():
+    data = pd.read_csv(datafilepath5, encoding = 'ISO-8859-1')
+    data = data.set_axis(['Age', '14-15', '15-16', '16-17', '17-18', '18-19', 'non'], axis='columns')
+    data = data.set_index('Age')
+    data = data.iloc[0:, 0:5]
+    data['14-15'] = data['14-15'].astype(int)
+    data['15-16'] = data['15-16'].astype(int)
+    data['16-17'] = data['16-17'].astype(int)
+    data['17-18'] = data['17-18'].astype(int)
+    data['18-19'] = data['18-19'].astype(int)
+    year1 = data.iloc[0:, 0].values.tolist()
+    year2 = data.iloc[0:, 1].values.tolist()
+    year3 = data.iloc[0:, 2].values.tolist()
+    year4 = data.iloc[0:, 3].values.tolist()
+    year5 = data.iloc[0:, 4].values.tolist()
+    x = ["Under 18", "18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "Over 85"]
+    x_axis = np.arange(len(x))
+    width = 0.1
+    plt.figure(figsize=(8,3))
+    plt.bar(x_axis-0.2, year1, width=width, label='14-15')
+    plt.bar(x_axis-0.1, year2, width=width, label='15-16')
+    plt.bar(x_axis, year3, width=width, label='16-17')
+    plt.bar(x_axis+0.1, year4, width=width, label='17-18')
+    plt.bar(x_axis+0.2, year5, width=width, label='18-19')
+    plt.xlabel('Age range')
+    plt.ylabel('Number of consumers')
+    plt.title('Number of Consumers in each age range over the 2014-2019 period')
+    plt.legend()
+
+    plt.xticks(x_axis + width/5, x)
+    plt.show()
+    plt.savefig("age.png")
+    plt.close()
+    return
+
 casesperquint()
 seifapop()
 seifapopvic()
 seifaviccon()
+age()
