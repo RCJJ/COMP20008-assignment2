@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import dataframe_image as dfi
 
-def all_australia():
+def remoteness():
 
     # Obtaining NOCC service users from second dataset in 2018-2019
     nocc_df = pandas.read_excel("data/nocc.xlsx", sheet_name=5, usecols=[2, 8], header=None,
@@ -265,6 +265,73 @@ def all_australia():
     plt.show()
     plt.close
 
+def age():
+    # Scatter plot: x = age, y = healthcare outcomes
+    # Do all australia
+    # Use histograms to compare NOCC access to age distribution in population
+    # Extrapolate to VIC
+
+    # Getting age NOCC data for age
+    age_df = pandas.read_excel("data/nocc.xlsx", sheet_name=5, usecols=[2, 8], header=None,
+                                names=["Age Bracket", "Consumers recieving mental healthcare"])
+    age_df = age_df.loc[[6, 12, 18, 24, 30, 36, 42, 48, 54]]
+    age_df = age_df.reset_index(drop=True)
+
+    # Creating a list of age brackets for bar chart labels
+    age_brackets = []
+    for i in range(len(age_df.index)):
+        age_brackets.append(age_df.iloc[i][0])
+
+    # Creating NOCC bar chart to compare to census for population distribution
+    age_df.plot.bar(xlabel="Age Bracket", ylabel="Population", legend=None,
+                    title="Mental healthcare recipients by age")
+    plt.xticks(ticks=[0, 1, 2, 3, 4, 5, 6, 7, 8], labels=age_brackets)
+    plt.tight_layout()
+    plt.savefig("age_bar.png", dpi=300)
+    plt.show()
+    plt.close()
+
+    # Obtaining total population count for age brackets from census
+    age_brackets = ["0-4", "5-9", "10-14", "15-19", "20-24","25-29","30-34","35-39","40-44","45-49","50-54","55-59","60-64","65-69","70-74","75+"]
+    census_df = pandas.read_excel("data/census.xls", sheet_name=3, usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                                  header=None, names=age_brackets)
+    census_df = census_df.loc[[164]]
+
+    # Creating census bar chart to compare to NOCC for population distribution
+    census_df.plot.bar(xlabel="Age Bracket", ylabel="Population (millions)", width = 2,
+                       title="Total population by age for all of Australia")
+    plt.tick_params(axis='x',  which='both',  bottom=False, top=False,labelbottom=False)
+    plt.legend(bbox_to_anchor=(1.04,1), loc="upper left")
+    plt.tight_layout()
+    plt.savefig("census_bar.png", dpi=300)
+    plt.show()
+    plt.close()
+
+    # Creating scatterplot for NOCC to analyse the age to healthcare trend
+    ax1 = age_df.plot.scatter(x="Age Bracket", y="Consumers recieving mental healthcare",
+                              title="Scatter plot to compare age and mental healthcare recipients")
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.savefig("age_scatter.png", dpi=300)
+    plt.show()
+    plt.close()
+
+    # Obtaining VIC's population count for age brackets from census
+    vic_census_df = pandas.read_excel("data/census.xls", sheet_name=3,
+                                  usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                                  header=None, names=age_brackets)
+    vic_census_df = vic_census_df.loc[[124]]
+
+    # Creating census bar chart for VIC to compare to the total population distribution
+    vic_census_df.plot.bar(xlabel="Age Bracket", ylabel="Population", width=2,
+                           title="Total population by age for Victoria")
+    plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+    plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
+    plt.tight_layout()
+    plt.savefig("vic_census_bar.png", dpi=300)
+    plt.show()
+    plt.close()
 
 if __name__ == "__main__":
-    all_australia()
+    remoteness()
+    age()
