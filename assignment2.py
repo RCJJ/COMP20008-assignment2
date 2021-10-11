@@ -7,6 +7,9 @@ datafilepath2 = 'data/Population per SEIFA Quintile.csv'
 datafilepath3 = 'data/Vic Pop SEIFA dist.csv'
 datafilepath4 = 'data/MHContacts per SEIFA.csv'
 datafilepath5 = 'data/Age.csv'
+datafilepath6 = 'data/IndigenousConsumers.csv'
+datafilepath7 = 'data/IndigenousPop.csv'
+datafilepath8 = 'data/IndigenousConsumersPercent.csv'
 
 def casesperquint():
     data = pd.read_csv(datafilepath, encoding = 'ISO-8859-1')
@@ -127,8 +130,35 @@ def age():
     plt.close()
     return
 
+def indigpercent():
+    data = pd.read_csv(datafilepath8, encoding = 'ISO-8859-1')
+    data = data.set_axis(['Indigenous Status', '16-17', '17-18', '18-19'], axis='columns')
+    data = data.set_index('Indigenous Status')
+    data['16-17'] = data['16-17'].astype(float)
+    data['17-18'] = data['17-18'].astype(float)
+    data['18-19'] = data['18-19'].astype(float)
+    year1 = data.iloc[0:, 0].values.tolist()
+    year2 = data.iloc[0:, 1].values.tolist()
+    year3 = data.iloc[0:, 2].values.tolist()
+    x = ['Non-Indigenous Australians', 'Indigenous Australians']
+    x_axis = np.arange(len(x))
+    width = 0.2
+    plt.bar(x_axis - 0.2, year1, width=width, label='16-17')
+    plt.bar(x_axis, year2, width=width, label='17-18')
+    plt.bar(x_axis + 0.2, year3, width=width, label='18-19')
+    plt.xlabel('Indigenous Status')
+    plt.ylabel('Percentage of Population')
+    plt.title('Percent of Indigenous vs Non-Indigenous accesing mental healthcare')
+    plt.legend()
+
+    plt.xticks(x_axis + width/10, x)
+    plt.show()
+    plt.savefig("indigenouscon.png")
+    plt.close()
+    return
+
 casesperquint()
 seifapop()
 seifapopvic()
 seifaviccon()
-age()
+indigpercent()
