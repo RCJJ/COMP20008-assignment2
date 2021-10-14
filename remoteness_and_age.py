@@ -131,8 +131,10 @@ def remoteness():
     plt.legend(["Population with mental health conditions", "Population that accesses mental healthcare"],
                prop={"size": 7.75})
     plt.title("Regional access to mental healthcare in Victoria")
-    plt.bar_label(vic_nocc_bar, vic_nocc_percents_str)
-    plt.bar_label(vic_survey_bar, vic_surveyed_percents_str)
+    #plt.bar_label(vic_nocc_bar, vic_nocc_percents_str) #does not work on older version from JupyterHub
+    #plt.bar_label(vic_survey_bar, vic_surveyed_percents_str) #does not work on older version from JupyterHub
+    for i in range(len(vic_surveyed_percents)):
+        plt.annotate(f"{vic_nocc_percents[i]}%", xy=(i+0.2, vic_nocc_percents[i]+0.1), ha="center", va="bottom")
     plt.tight_layout()
     plt.savefig("victoria.png", dpi=300)
     plt.show()
@@ -168,8 +170,10 @@ def remoteness():
     plt.ylabel("Percent of population", style='italic')
     plt.legend(["Population with mental health conditions", "Population that accesses mental healthcare"], prop={"size":7.75})
     plt.title("Regional access to mental healthcare in Australia")
-    plt.bar_label(nocc_bar, nocc_percents_str)
-    plt.bar_label(survey_bar, surveyed_percents_str)
+    #plt.bar_label(nocc_bar, nocc_percents_str) #does not work on older version from JupyterHub
+    #plt.bar_label(survey_bar, surveyed_percents_str) #does not work on older version from JupyterHub
+    for i in range(len(surveyed_percents)):
+        plt.annotate(f"{nocc_percents[i]}%", xy=(i+0.2, nocc_percents[i]+0.1), ha="center", va="bottom")
     plt.tight_layout()
     plt.savefig("australia.png", dpi=300)
     plt.show()
@@ -216,6 +220,7 @@ def remoteness():
     width = 0.40
     x = np.arange(3)
     y = np.arange(8)
+    annotate_list = [8.24, 9.74, 14.13]
     plt.bar(x - 0.2, estimate_values, width)
     test = plt.bar(x + 0.2, access_values, width)
     plt.xticks(x, ["Major City", "Inner Regional", "Outer Regional"])
@@ -223,7 +228,9 @@ def remoteness():
     plt.ylabel("Population (millions)", style='italic')
     plt.legend(["Population with mental health conditions", "Population that accesses mental healthcare"])
     plt.title("Regional access to mental healthcare in Australia")
-    plt.bar_label(test, ["8.24%", "9.74%", "14.13%"])
+    # plt.bar_label(test, ["8.24%", "9.74%", "14.13%"])
+    for i in range(len(annotate_list)):
+        plt.annotate(f"{annotate_list[i]}%", xy=(i+0.2, access_values[i]+0.1), ha="center", va="bottom")
     plt.savefig("australia_raw.png", dpi=300)
     plt.show()
     plt.close()
@@ -253,7 +260,9 @@ def remoteness():
     plt.ylabel("Population", style='italic')
     plt.legend(["Population with mental health conditions", "Population that accesses mental healthcare"])
     plt.title("Regional access to mental healthcare in Victoria")
-    plt.bar_label(test, vic_percent_list)
+    # plt.bar_label(test, vic_percent_list)
+    for i in range(len(annotate_list)):
+        plt.annotate(vic_percent_list[i], xy=(i+0.2, vic_access_values[i]+0.1), ha="center", va="bottom")
     plt.tight_layout()
     plt.savefig("victoria_raw.png", dpi=300)
     plt.show()
